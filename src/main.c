@@ -6,25 +6,42 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 18:00:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/04 18:37:13 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/04 21:18:56 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	pid_child(char **argv, int *fd)
+void	child_p(char **argv, int *fd, char **envp)
 {
 	int	infile_fd;
 
 	infile_fd = open(argv[1], O_RDONLY);
 	if (infile_fd == -1)
 	{
-
+		perror("Error");
+		exit(EXIT_FAILURE);
 	}
-	//open the file that is given
-	//check if the file is existed
+	close(fd[0]);
+	dup2(fd[1], STDOUT_FILENO);
+	dup2(infile_fd, STDIN_FILENO);
+	// execute the cmd
 }
-void	pid_parent(){}
+void	parent_p(char **argv, int fd, char **envp)
+{
+	int	outfile_fd;
+
+	outfile_fd = open(argv[5], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (outfile_fd == -1)
+	{
+		perror("Error");
+		exit(EXIT_FAILURE);
+	}
+	close(fd[1]);
+	dup2(fd[0], STDIN_FILENO);
+	dup2(outfile_fd, STDOUT_FILENO);
+	// execute the cmd
+}
 
 int	main(int argc, char **argv, char **envp)
 {
