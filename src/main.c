@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 18:00:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/05 07:29:14 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/05 07:31:34 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	child_p(char **argv, int *fd, char **envp)
 		err_exit();
 	if (dup2(infile_fd, STDIN_FILENO) == -1)
 		err_exit();
+	//execution line
 	return ;
 }
 
@@ -39,16 +40,12 @@ void	parent_p(char **argv, int fd, char **envp)
 		err_exit();
 	if (dup2(outfile_fd, STDOUT_FILENO) == -1)
 		err_exit();
+	//execution line
 	return ;
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	// non bonus project
-	// argc min 5
-	// bonus argc > 5
-	// learn how to support here_doc
-	// ./pipex infile "ls -l" "wc -l" outfile example case
 	int		fd[2];
 	pid_t	p_id;
 
