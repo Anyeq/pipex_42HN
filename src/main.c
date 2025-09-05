@@ -6,13 +6,13 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 18:00:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/05 07:31:34 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/05 10:59:22 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	child_p(char **argv, int *fd, char **envp)
+static void	child_p(char **argv, int *fd, char **envp)
 {
 	int	infile_fd;
 
@@ -24,11 +24,11 @@ void	child_p(char **argv, int *fd, char **envp)
 		err_exit();
 	if (dup2(infile_fd, STDIN_FILENO) == -1)
 		err_exit();
-	//execution line
+	execute_program(argv[2], envp);
 	return ;
 }
 
-void	parent_p(char **argv, int fd, char **envp)
+static void	parent_p(char **argv, int fd, char **envp)
 {
 	int	outfile_fd;
 
@@ -40,7 +40,7 @@ void	parent_p(char **argv, int fd, char **envp)
 		err_exit();
 	if (dup2(outfile_fd, STDOUT_FILENO) == -1)
 		err_exit();
-	//execution line
+	execute_program(argv[3], envp);
 	return ;
 }
 
@@ -62,6 +62,7 @@ int	main(int argc, char **argv, char **envp)
 		err_exit();
 	if (p_id == 0)
 		child_p(argv, &fd, envp);
-	parent_p(argv, &fd, envp);
+	else
+		parent_p(argv, &fd, envp);
 	return (0);
 }

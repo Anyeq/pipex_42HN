@@ -6,36 +6,63 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:59:10 by asando            #+#    #+#             */
-/*   Updated: 2025/09/05 08:47:35 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/05 10:58:03 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*find_program(char *cmd, char *argv, char **envp)
+static char	*find_program(char *cmd, char **envp)
 {
-	char *res;
-	char **paths;
+	char	*res;
+	char	**paths;
+	int		i;
 
+	i = 0;
 	res = NULL;
-	while (envp != NULL && ft_strncmp(*envp, "PATH", 4) != 0)
+	while (envp && *envp && ft_strncmp(*envp, "PATH=", 5) != 0)
 		envp++;
 	paths = ft_split((*envp) + 5, ':');
-	while (paths != NULL)
+	while (paths[i])
 	{
-		res = ft_strjoin(*paths, cmd);
+		res = ft_strjoin(paths[i++], cmd);
 		if (access(res, F_OK) == 0)
-			break;
+			break ;
 		free(res);
-		res == NULL;
-		paths++;
+		res = NULL;
 	}
-	if (paths == NULL)
+	i = 0;
+	while (paths[i])
+		free(paths[i++]);
+	free(paths);
 	return (res);
 }
 
-void	execute_program()
+void	execute_program(char *argv, char **envp)
 {
+	char	*path;
+	char	*slash_command;
+	char	**command;
+
+	command = ft_split(argv, ' ');
+	if (command == NULL)
+		return ;
+	slash_command = ft_strjoin("/", command[0]);
+	if (slash_command == NULL)
+		return ;
+	path = find_program(slash_command, envp);
+	free(slash_command);
+	if (path && execve(path, command, envp) == -1)
+	{
+		free(path);
+		while (*command)
+		{
+			free(*command)
+			command++;
+		}
+		free(command);
+		err_exit();
+	}
 	return ;
 }
 
@@ -44,15 +71,3 @@ void	err_exit(void)
 	perror("Error");
 	exit(EXIT_FAILURE);
 }
-
-//take the input "cmd option option"
-//take the cmd as a address to look on PATH
-//take the option for excecuting the cmd
-
-char **grab_arg(char *argv)
-{
-	char **result;
-	result = ft_split(argv, ' ');
-
-}
-
