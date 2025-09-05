@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:59:10 by asando            #+#    #+#             */
-/*   Updated: 2025/09/05 11:48:18 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/05 12:54:51 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static char	*find_program(char *cmd, char **envp)
 	res = NULL;
 	while (envp && *envp && ft_strncmp(*envp, "PATH=", 5) != 0)
 		envp++;
+	if (envp == NULL || *envp == NULL)
+		return (res);
 	paths = ft_split((*envp) + 5, ':');
 	while (paths[i])
 	{
@@ -32,7 +34,7 @@ static char	*find_program(char *cmd, char **envp)
 		res = NULL;
 	}
 	i = 0;
-	while (paths[i])
+	while (paths && paths[i])
 		free(paths[i++]);
 	free(paths);
 	return (res);
@@ -43,7 +45,9 @@ void	execute_program(char *argv, char **envp)
 	char	*path;
 	char	*slash_command;
 	char	**command;
+	int		i;
 
+	i = 0;
 	command = ft_split(argv, ' ');
 	if (command == NULL)
 		return ;
@@ -52,14 +56,10 @@ void	execute_program(char *argv, char **envp)
 		return ;
 	path = find_program(slash_command, envp);
 	free(slash_command);
-	if (path && execve(path, command, envp) == -1)
+	if (path == NULL || execve(path, command, envp) == -1)
 	{
-		free(path);
-		while (*command)
-		{
-			free(*command);
-			command++;
-		}
+		while (command[i])
+			free(command[i++]);
 		free(command);
 		err_exit();
 	}
