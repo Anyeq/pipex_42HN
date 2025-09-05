@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:59:10 by asando            #+#    #+#             */
-/*   Updated: 2025/09/05 10:58:03 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/05 11:48:18 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	execute_program(char *argv, char **envp)
 		free(path);
 		while (*command)
 		{
-			free(*command)
+			free(*command);
 			command++;
 		}
 		free(command);

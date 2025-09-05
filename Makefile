@@ -6,7 +6,7 @@
 #    By: asando <asando@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:03:25 by asando            #+#    #+#              #
-#    Updated: 2025/09/05 11:41:41 by asando           ###   ########.fr        #
+#    Updated: 2025/09/05 11:44:41 by asando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ all: $(NAME)
 $(NAME): $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIBFT_DIR) -lft
 
-$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
