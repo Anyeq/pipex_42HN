@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   grab_arg.c                                         :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:59:10 by asando            #+#    #+#             */
-/*   Updated: 2025/08/28 18:09:47 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/04 21:35:12 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	grab_arg(char **str, char **result, int	n_str)
+void	execute_cmd()
 {
-	int	i;
+	return ;
+}
 
-	i = 0;
-	while (i < n_str)
-	{
-
-	}
-	return (0);
+void	err_exit(void)
+{
+	perror("Error");
+	exit(EXIT_FAILURE);
 }
