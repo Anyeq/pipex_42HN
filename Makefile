@@ -6,7 +6,7 @@
 #    By: asando <asando@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:03:25 by asando            #+#    #+#              #
-#    Updated: 2025/09/05 11:44:41 by asando           ###   ########.fr        #
+#    Updated: 2025/09/05 14:28:09 by asando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ ifeq ($(DEBUG), 1)
 endif
 
 SRC_DIR = src
-SRCS = main.c pipex_utils.c
+SRCS = pipex.c pipex_utils.c
 
 OBJ_DIR = obj
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
