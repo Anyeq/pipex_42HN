@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 13:53:05 by asando            #+#    #+#             */
-/*   Updated: 2025/09/08 16:44:22 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/08 17:25:24 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,36 @@ static int	init_pipes(int **fds)
 int	main(int argc, char **argv, char **envp)
 {
 	int	**fds;
-	fds = init_fds(n_pipes);
-	if (init_pipes(pipes) == -1)
-		err_exit();
+	int	n_pipes;
+	int	p_id;
+	int	i;
+
+	i = 0;
+	n_pipes = argc - 4;
+	if (argc >= 5)
+	{
+		if (check_hello_doc(argv[1]) == 0)
+			run_hello_doc_function();
+		fds = init_fds(n_pipes);
+		if (fds == NULL || init_pipes(pipes) == -1)
+			err_exit();
+		// for non hello_doc case
+		while (i < n_pipes)
+		{
+			p_id = fork();
+			if (p_id == -1)
+				err_exit();
+			else if (p_id == 0)
+				break;
+			i++;
+		}
+		if (p_id == 0)
+			child_p(argv, fds, envp, i);
+		else
+		{
+			waitpid(p_id, NULL, 0);
+			parent_p(argv, fds, envp, i);
+		}
+	}
 	return (0);
 }
