@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 18:00:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/05 12:30:48 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/05 14:47:57 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static void	child_p(char **argv, int *fd, char **envp)
 		err_exit();
 	if (dup2(infile_fd, STDIN_FILENO) == -1)
 		err_exit();
+	close(fd[1]);
+	close(infile_fd);
 	execute_program(argv[2], envp);
 	return ;
 }
@@ -32,7 +34,7 @@ static void	parent_p(char **argv, int *fd, char **envp)
 {
 	int	outfile_fd;
 
-	outfile_fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	outfile_fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile_fd == -1)
 		err_exit();
 	close(fd[1]);
@@ -40,6 +42,8 @@ static void	parent_p(char **argv, int *fd, char **envp)
 		err_exit();
 	if (dup2(outfile_fd, STDOUT_FILENO) == -1)
 		err_exit();
+	close(fd[0]);
+	close(outfile_fd);
 	execute_program(argv[3], envp);
 	return ;
 }
@@ -51,8 +55,8 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 5)
 	{
-		ft_putstr_fd("Error argument not 4\n", 2);
-		ft_putstr_fd("Format: ./pipex <file1> <cmd1> <cmd2> <file2>", 1);
+		ft_putstr_fd("Error: Bad Argument\n", 2);
+		ft_putstr_fd("Format: ./pipex <file1> <cmd1> <cmd2> <file2>", 2);
 		return (1);
 	}
 	if (pipe(fd) == -1)
@@ -63,6 +67,9 @@ int	main(int argc, char **argv, char **envp)
 	if (p_id == 0)
 		child_p(argv, fd, envp);
 	else
+	{
+		waitpid(p_id, NULL, 0);
 		parent_p(argv, fd, envp);
+	}
 	return (0);
 }
