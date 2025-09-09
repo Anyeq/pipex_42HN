@@ -6,13 +6,13 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 13:53:05 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 17:23:58 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/09 17:50:17 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static void	create_child_p(char **argv, int **fds, int n_pipes, char **envp)
+static int	create_child_p(char **argv, int **fds, int n_pipes, char **envp)
 {
 	int	i;
 	int	p_id;
@@ -30,11 +30,15 @@ static void	create_child_p(char **argv, int **fds, int n_pipes, char **envp)
 		else if (p_id == 0)
 		{
 			child_p(argv, fds, n_pipes, i);
-			execute_program(argv[i], envp);
+			if (execute_program(argv[i], envp) == -1)
+			{
+				close_fds(fds);
+				err_exit();
+			}
 		}
 		i++;
 	}
-	return ;
+	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
