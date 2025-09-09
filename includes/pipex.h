@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:56:11 by asando            #+#    #+#             */
-/*   Updated: 2025/09/05 11:00:39 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:16:55 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/wait.h>
 # include "libft.h"
 
-void	execute_program(char *argv, char **envp);
+int		execute_program(char *argv, char **envp);
 void	err_exit(void);
 
 #endif

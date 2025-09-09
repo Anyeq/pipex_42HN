@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 18:00:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/05 14:47:57 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:16:25 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static void	child_p(char **argv, int *fd, char **envp)
 		err_exit();
 	close(fd[1]);
 	close(infile_fd);
-	execute_program(argv[2], envp);
+	if (execute_program(argv[2], envp) == -1)
+		err_exit();
 	return ;
 }
 
@@ -44,7 +45,8 @@ static void	parent_p(char **argv, int *fd, char **envp)
 		err_exit();
 	close(fd[0]);
 	close(outfile_fd);
-	execute_program(argv[3], envp);
+	if (execute_program(argv[3], envp) == -1)
+		err_exit();
 	return ;
 }
 

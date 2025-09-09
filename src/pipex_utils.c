@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:59:10 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 17:47:36 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/09 19:07:01 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*find_program(char *cmd, char **envp)
 	return (res);
 }
 
-void	execute_program(char *argv, char **envp)
+int	execute_program(char *argv, char **envp)
 {
 	char	*path;
 	char	*slash_command;
@@ -50,10 +50,10 @@ void	execute_program(char *argv, char **envp)
 	i = 0;
 	command = ft_split(argv, ' ');
 	if (command == NULL)
-		return ;
+		return (-1);
 	slash_command = ft_strjoin("/", command[0]);
 	if (slash_command == NULL)
-		return ;
+		return (-1);
 	path = find_program(slash_command, envp);
 	free(slash_command);
 	if (path == NULL || execve(path, command, envp) == -1)
@@ -61,9 +61,9 @@ void	execute_program(char *argv, char **envp)
 		while (command[i])
 			free(command[i++]);
 		free(command);
-		err_exit();
+		return (-1);
 	}
-	return ;
+	return (0);
 }
 
 void	err_exit(void)

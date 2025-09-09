@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 13:53:46 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 14:38:56 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:17:19 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include "libft.h"
 
 typedef enum of_flag
 {
