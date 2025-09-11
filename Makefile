@@ -6,7 +6,7 @@
 #    By: asando <asando@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:03:25 by asando            #+#    #+#              #
-#    Updated: 2025/09/10 17:55:31 by asando           ###   ########.fr        #
+#    Updated: 2025/09/11 18:11:58 by asando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,10 @@ BONUS ?= 0
 
 HEADER = includes
 LIBFT_HEADER = ./lib/libft/include
+GET_NEXT_LINE_HEADER = ./lib/get_next_line/include
 
-CFLAGS = -Wall -Wextra -Werror -I$(HEADER) -I$(LIBFT_HEADER)
+CFLAGS = -Wall -Wextra -Werror -I$(HEADER) -I$(LIBFT_HEADER) \
+		 -I$(GET_NEXT_LINE_HEADER)
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -g -O0
