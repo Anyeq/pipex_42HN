@@ -6,7 +6,7 @@
 #    By: asando <asando@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/16 14:20:33 by asando            #+#    #+#              #
-#    Updated: 2025/08/10 14:43:14 by asando           ###   ########.fr        #
+#    Updated: 2025/09/11 18:15:08 by asando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRCS = ft_isalnum.c ft_isprint.c ft_memcmp.c ft_putchar_fd.c ft_split.c \
 	   ft_tolower.c ft_bzero.c   ft_isascii.c ft_striteri.c \
 	   ft_memmove.c ft_putnbr_fd.c  ft_strdup.c  ft_strlen.c  ft_strrchr.c \
 	   ft_toupper.c ft_calloc.c  ft_isdigit.c ft_memchr.c  ft_memset.c  \
-	   ft_putstr_fd.c  ft_strjoin.c ft_strmapi.c ft_strtrim.c
+	   ft_putstr_fd.c  ft_strjoin.c ft_strmapi.c ft_strtrim.c \
+	   get_next_line_bonus.c get_next_line_utils_bonus.c
 
 BONUS = ft_lstnew_bonus.c ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c \
 		ft_lstclear_bonus.c ft_lstdelone_bonus.c ft_lstiter_bonus.c \
