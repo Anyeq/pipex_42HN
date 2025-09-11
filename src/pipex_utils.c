@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:59:10 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 19:07:01 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/11 15:56:43 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ int	execute_program(char *argv, char **envp)
 
 void	err_exit(void)
 {
-	perror("Error");
+	perror("pipex");
 	exit(EXIT_FAILURE);
 }
