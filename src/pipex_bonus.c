@@ -6,20 +6,20 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 13:53:05 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 17:50:17 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/11 15:37:20 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static int	create_child_p(char **argv, int **fds, int n_pipes, char **envp)
+static void	create_child_p(char **argv, int **fds, int n_pipes, char **envp)
 {
 	int	i;
 	int	p_id;
 
-	i = 0;
+	i = -1;
 	p_id = -1;
-	while (i < n_pipes)
+	while (++i <= n_pipes)
 	{
 		p_id = fork();
 		if (p_id == -1)
@@ -28,17 +28,17 @@ static int	create_child_p(char **argv, int **fds, int n_pipes, char **envp)
 			err_exit();
 		}
 		else if (p_id == 0)
-		{
-			child_p(argv, fds, n_pipes, i);
-			if (execute_program(argv[i], envp) == -1)
-			{
-				close_fds(fds);
-				err_exit();
-			}
-		}
-		i++;
+			break ;
 	}
-	return (0);
+	if (p_id != 0)
+		close_fds(fds);
+	if (p_id == 0)
+	{
+		child_p(argv, fds, n_pipes, i);
+		if (execute_program(argv[i + 2], envp) == -1)
+			err_exit();
+	}
+	return ;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -54,7 +54,6 @@ int	main(int argc, char **argv, char **envp)
 			err_exit();
 		create_child_p(argv, fds, n_pipes, envp);
 		wait_all_child_p(n_pipes);
-		close_fds(fds);
 	}
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:50:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 14:52:39 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/09 22:37:46 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static int	**init_fd(int npipe)
+int	**init_fds(int npipe)
 {
 	int	**fds;
 	int	i;
@@ -41,7 +41,7 @@ static int	**init_fd(int npipe)
 	return (NULL);
 }
 
-static void	close_fds(int **fds)
+void	close_fds(int **fds)
 {
 	int	i;
 
@@ -52,11 +52,12 @@ static void	close_fds(int **fds)
 		close(fds[i][1]);
 		free(fds[i++]);
 	}
+	free(fds[i]);
 	free(fds);
 	return ;
 }
 
-static int	init_pipes(int **fds)
+int	init_pipes(int **fds)
 {
 	int	i;
 	int	j;
@@ -65,7 +66,7 @@ static int	init_pipes(int **fds)
 	j = 0;
 	while (fds[i])
 	{
-		if (pipe[fds[i]] == -1)
+		if (pipe(fds[i]) == -1)
 		{
 			while (j < i)
 			{
@@ -75,6 +76,7 @@ static int	init_pipes(int **fds)
 			}
 			while (fds[i])
 				free(fds[i++]);
+			free(fds[i]);
 			free(fds);
 			return (-1);
 		}
@@ -83,7 +85,7 @@ static int	init_pipes(int **fds)
 	return (0);
 }
 
-static int	open_file(char *argv, t_offlag of_flag)
+int	open_file(char *argv, t_offlag of_flag)
 {
 	int	file_fd;
 

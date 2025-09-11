@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:21:15 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 17:23:52 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/11 15:20:37 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	last_child_process(char **argv, int **fds, int i)
 	file_fd = open_file(argv[len_argv - 1], OF_TR);
 	if (file_fd == -1)
 		return (-1);
-	if (dup2(fds[i][0], STDIN_FILENO) == -1)
+	if (dup2(fds[i - 1][0], STDIN_FILENO) == -1)
 		return (-1);
 	if (dup2(file_fd, STDOUT_FILENO) == -1)
 		return (-1);
@@ -50,7 +50,7 @@ static int	last_child_process(char **argv, int **fds, int i)
 
 static int	middle_child_process(int **fds, int i)
 {
-	if (dup2(fds[i][0], STDIN_FILENO) == -1)
+	if (dup2(fds[i - 1][0], STDIN_FILENO) == -1)
 		return (-1);
 	if (dup2(fds[i][1], STDOUT_FILENO) == -1)
 		return (-1);
@@ -62,9 +62,9 @@ void	wait_all_child_p(int n_pipes)
 	int	i;
 
 	i = 0;
-	while (i < n_pipes)
+	while (i <= n_pipes)
 	{
-		wait(NULL)
+		wait(NULL);
 		i++;
 	}
 	return ;
@@ -72,26 +72,28 @@ void	wait_all_child_p(int n_pipes)
 
 void	child_p(char **argv, int **fds, int n_pipes, int i)
 {
-	int	file_fd;
+	int	res;
 
-	file_fd = 0;
-	if (i == 0 && first_child_process(argv, fds) == -1)
+	res = 0;
+	if (i == 0)
 	{
-		close_fds(fds);
-		err_exit();
+		if (first_child_process(argv, fds) == -1)
+			res = -1;
 	}
-	else if (i == n_pipes && last_child_process(argv, fds, i) == -1)
+	else if (i == n_pipes)
 	{
-		close_fds(fds);
-		err_exit();
+		if (last_child_process(argv, fds, i) == -1)
+			res = -1;
 	}
 	else
 	{
 		if (middle_child_process(fds, i) == -1)
-		{
-			close_fds(fds);
-			err_exit();
-		}
+			res = -1;
+	}
+	if (res == -1)
+	{
+		close_fds(fds);
+		err_exit();
 	}
 	close_fds(fds);
 	return ;
