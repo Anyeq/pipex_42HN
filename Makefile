@@ -6,12 +6,13 @@
 #    By: asando <asando@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:03:25 by asando            #+#    #+#              #
-#    Updated: 2025/09/05 14:28:09 by asando           ###   ########.fr        #
+#    Updated: 2025/09/10 17:55:31 by asando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC ?= cc
 DEBUG ?= 0
+BONUS ?= 0
 
 HEADER = includes
 LIBFT_HEADER = ./lib/libft/include
@@ -24,6 +25,10 @@ endif
 
 SRC_DIR = src
 SRCS = pipex.c pipex_utils.c
+ifeq ($(BONUS), 1)
+	SRCS = pipex_bonus.c pipex_bonus_utils.c child_process_utils_bonus.c \
+		   pipex_utils.c
+endif
 
 OBJ_DIR = obj
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
@@ -46,22 +51,27 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
+
+bonus:
+	@$(MAKE) --no-print-directory BONUS=1 fclean
+	@$(MAKE) --no-print-directory BONUS=1 all
+	@echo "Bonus version compiled to pipex"
 
 clean:
 	@rm -rf $(OBJ_DIR)
-	@$(MAKE) clean -C $(LIBFT_DIR)
+	@$(MAKE) --no-print-directory clean -C $(LIBFT_DIR)
 
 fclean: clean
 	@echo "Program deleted"
 	@rm -rf $(NAME)
-	@$(MAKE) fclean -C $(LIBFT_DIR)
+	@$(MAKE) --no-print-directory fclean -C $(LIBFT_DIR)
 
 re:
-	@$(MAKE) fclean
-	@$(MAKE) all
+	@$(MAKE) --no-print-directory fclean
+	@$(MAKE) --no-print-directory all
 
 debug:
-	@$(MAKE) DEBUG=1 re
+	@$(MAKE) --no-print-directory DEBUG=1 BONUS=1 re
 
-.PHONY: all clean fclean re debug
+.PHONY: all clean fclean re debug bonus
