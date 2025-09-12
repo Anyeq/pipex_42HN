@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:59:10 by asando            #+#    #+#             */
-/*   Updated: 2025/09/12 10:39:41 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/12 11:24:14 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,19 @@ int	execute_program(char *argv, char **envp)
 		while (command[i])
 			free(command[i++]);
 		free(command);
+		if (path == NULL)
+			return (-2);
 		return (-1);
 	}
 	return (0);
 }
 
-void	err_exit(void)
+void	err_exit(char *msg)
 {
-	perror("pipex");
+	if (msg == NULL)
+		perror("pipex");
+	else
+		ft_putstr_fd(msg, 2);
 	exit(EXIT_FAILURE);
 }
 

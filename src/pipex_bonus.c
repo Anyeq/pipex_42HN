@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 13:53:05 by asando            #+#    #+#             */
-/*   Updated: 2025/09/12 09:55:38 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/12 11:31:55 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	multiple_fork(int **fds, int n_pipes, int *p_id)
 		if (*p_id == -1)
 		{
 			close_fds(fds);
-			err_exit();
+			err_exit(NULL);
 		}
 		else if (*p_id == 0)
 			return (i);
@@ -44,8 +44,8 @@ static void	create_child_p(char **argv, int **fds, int n_pipes, char **envp)
 	if (p_id == 0)
 	{
 		child_p(argv, fds, n_pipes, i);
-		if (execute_program(argv[i + 2], envp) == -1)
-			err_exit();
+		if (execute_program(argv[i + 2], envp) != 0)
+			err_exit("pipex: command not found: ");
 	}
 	return ;
 }
@@ -61,7 +61,7 @@ static void	here_doc_scan(char **argv, int **fds)
 	{
 		input_str = get_next_line(0);
 		if (!input_str)
-			err_exit();
+			err_exit(NULL);
 		if (ft_strncmp(input_str, argv[2], limiter_len) == 0
 			&& input_str[limiter_len] == '\n')
 		{
@@ -89,8 +89,8 @@ static void	here_doc_exec(char **argv, int **fds, int n_pipes, char **envp)
 			child_p(argv, fds, n_pipes, i + 1);
 		else if (i == n_pipes - 1)
 			child_p(argv, fds, n_pipes - 1, i);
-		if (i != n_pipes && execute_program(argv[i + 3], envp) == -1)
-			err_exit();
+		if (i != n_pipes && execute_program(argv[i + 3], envp) != 0)
+			err_exit("pipex: command not found: ");
 	}
 	return ;
 }
@@ -114,7 +114,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	fds = init_fds(n_pipes);
 	if (fds == NULL || init_pipes(fds) == -1)
-		err_exit();
+		err_exit(NULL);
 	if (here_doc_mode)
 		here_doc_exec(argv, fds, n_pipes, envp);
 	else

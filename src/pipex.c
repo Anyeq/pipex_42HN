@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 18:00:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/12 11:01:06 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/12 11:29:40 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ static void	child_p(char **argv, int *fd, char **envp)
 	if (infile_fd != -1)
 		close(infile_fd);
 	close_single_pipe(fd);
-	if (res == 0 && execute_program(argv[2], envp) == -1)
-		res = -1;
+	if (res == 0 && execute_program(argv[2], envp) != 0)
+		res = -2;
 	if (res == -1)
-		err_exit();
+		err_exit(NULL);
+	else if (res == -2)
+		err_exit("pipex: command not found: ");
 	return ;
 }
 
@@ -51,10 +53,12 @@ static void	parent_p(char **argv, int *fd, char **envp)
 	if (outfile_fd != -1)
 		close(outfile_fd);
 	close_single_pipe(fd);
-	if (res == 0 && execute_program(argv[3], envp) == -1)
-		res = -1;
+	if (res == 0 && execute_program(argv[3], envp) != 0)
+		res = -2;
 	if (res == -1)
-		err_exit();
+		err_exit(NULL);
+	else if (res == -2)
+		err_exit("pipex: command not found: ");
 	return ;
 }
 
@@ -69,12 +73,12 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	if (pipe(fd) == -1)
-		err_exit();
+		err_exit(NULL);
 	p_id = fork();
 	if (p_id == -1)
 	{
 		close_single_pipe(fd);
-		err_exit();
+		err_exit(NULL);
 	}
 	if (p_id == 0)
 		child_p(argv, fd, envp);

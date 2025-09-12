@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:21:15 by asando            #+#    #+#             */
-/*   Updated: 2025/09/12 10:18:53 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/12 11:32:23 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	child_p(char **argv, int **fds, int n_pipes, int i)
 	if (res == -1)
 	{
 		close_fds(fds);
-		err_exit();
+		err_exit(NULL);
 	}
 	close_fds(fds);
 	return ;
