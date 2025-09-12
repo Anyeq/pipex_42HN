@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:21:15 by asando            #+#    #+#             */
-/*   Updated: 2025/09/11 15:20:37 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/12 10:18:53 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,16 @@ static int	last_child_process(char **argv, int **fds, int i)
 	while (argv[len_argv])
 		len_argv++;
 	file_fd = 0;
-	file_fd = open_file(argv[len_argv - 1], OF_TR);
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+		file_fd = open_file(argv[len_argv - 1], OF_APP);
+	else
+	{
+		file_fd = open_file(argv[len_argv - 1], OF_TR);
+		i -= 1;
+	}
 	if (file_fd == -1)
 		return (-1);
-	if (dup2(fds[i - 1][0], STDIN_FILENO) == -1)
+	if (dup2(fds[i][0], STDIN_FILENO) == -1)
 		return (-1);
 	if (dup2(file_fd, STDOUT_FILENO) == -1)
 		return (-1);
@@ -85,7 +91,7 @@ void	child_p(char **argv, int **fds, int n_pipes, int i)
 		if (last_child_process(argv, fds, i) == -1)
 			res = -1;
 	}
-	else
+	else if (i > 0 && i < n_pipes)
 	{
 		if (middle_child_process(fds, i) == -1)
 			res = -1;

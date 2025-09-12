@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 13:53:46 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 22:02:29 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/11 22:41:59 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/wait.h>
 # include "pipex.h"
 # include "libft.h"
+# include "get_next_line_bonus.h"
 
 typedef enum e_of_flag
 {
@@ -36,4 +37,3 @@ void	wait_all_child_p(int n_pipes);
 void	child_p(char **argv, int **fds, int n_pipes, int i);
 
 #endif
-

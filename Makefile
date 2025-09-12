@@ -6,7 +6,7 @@
 #    By: asando <asando@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:03:25 by asando            #+#    #+#              #
-#    Updated: 2025/09/11 18:11:58 by asando           ###   ########.fr        #
+#    Updated: 2025/09/11 22:43:01 by asando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ endif
 SRC_DIR = src
 SRCS = pipex.c pipex_utils.c
 ifeq ($(BONUS), 1)
-	SRCS = pipex_bonus.c pipex_bonus_utils.c child_process_utils_bonus.c \
+	SRCS = pipex_bonus.c pipex_utils_bonus.c child_process_utils_bonus.c \
 		   pipex_utils.c
 endif
 

@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:59:10 by asando            #+#    #+#             */
-/*   Updated: 2025/09/11 15:56:43 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/12 10:39:41 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,28 @@ void	err_exit(void)
 {
 	perror("pipex");
 	exit(EXIT_FAILURE);
+}
+
+void	close_single_pipe(int *fd)
+{
+	close(fd[0]);
+	close(fd[1]);
+	return ;
+}
+
+int	bad_usage(int bonus_mode)
+{
+	char	*str;
+
+	str = "./pipex \"here_doc\" <LIMITER> <cmd> <cmd1> <...> <outfile>\n";
+	if (bonus_mode)
+	{
+		ft_putstr_fd("pipex: Bad argument\n", 2);
+		ft_putstr_fd("./pipex <infile> <cmd1> <cmd2> <...> <outfile>\n", 2);
+		ft_putstr_fd(str, 2);
+		return (-1);
+	}
+	ft_putstr_fd("pipex: Bad argument\n", 2);
+	ft_putstr_fd("./pipex <infile> <cmd1> <cmd2> <outfile>\n", 2);
+	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 18:00:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/09 20:16:25 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/12 11:01:06 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,22 @@
 static void	child_p(char **argv, int *fd, char **envp)
 {
 	int	infile_fd;
+	int	res;
 
+	res = 0;
 	infile_fd = open(argv[1], O_RDONLY);
 	if (infile_fd == -1)
-		err_exit();
-	close(fd[0]);
+		res = -1;
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		err_exit();
+		res = -1;
 	if (dup2(infile_fd, STDIN_FILENO) == -1)
-		err_exit();
-	close(fd[1]);
-	close(infile_fd);
-	if (execute_program(argv[2], envp) == -1)
+		res = -1;
+	if (infile_fd != -1)
+		close(infile_fd);
+	close_single_pipe(fd);
+	if (res == 0 && execute_program(argv[2], envp) == -1)
+		res = -1;
+	if (res == -1)
 		err_exit();
 	return ;
 }
@@ -34,18 +38,22 @@ static void	child_p(char **argv, int *fd, char **envp)
 static void	parent_p(char **argv, int *fd, char **envp)
 {
 	int	outfile_fd;
+	int	res;
 
+	res = 0;
 	outfile_fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile_fd == -1)
-		err_exit();
-	close(fd[1]);
+		res = -1;
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		err_exit();
+		res = -1;
 	if (dup2(outfile_fd, STDOUT_FILENO) == -1)
-		err_exit();
-	close(fd[0]);
-	close(outfile_fd);
-	if (execute_program(argv[3], envp) == -1)
+		res = -1;
+	if (outfile_fd != -1)
+		close(outfile_fd);
+	close_single_pipe(fd);
+	if (res == 0 && execute_program(argv[3], envp) == -1)
+		res = -1;
+	if (res == -1)
 		err_exit();
 	return ;
 }
@@ -57,15 +65,17 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 5)
 	{
-		ft_putstr_fd("Error: Bad Argument\n", 2);
-		ft_putstr_fd("Format: ./pipex <file1> <cmd1> <cmd2> <file2>", 2);
+		bad_usage(0);
 		return (1);
 	}
 	if (pipe(fd) == -1)
 		err_exit();
 	p_id = fork();
 	if (p_id == -1)
+	{
+		close_single_pipe(fd);
 		err_exit();
+	}
 	if (p_id == 0)
 		child_p(argv, fd, envp);
 	else
