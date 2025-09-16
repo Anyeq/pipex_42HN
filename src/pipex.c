@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 18:00:01 by asando            #+#    #+#             */
-/*   Updated: 2025/09/12 11:29:40 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/16 14:01:36 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ static void	child_p(char **argv, int *fd, char **envp)
 	if (res == 0 && execute_program(argv[2], envp) != 0)
 		res = -2;
 	if (res == -1)
-		err_exit(NULL);
+		err_exit("pipex: No such file or directory\n");
 	else if (res == -2)
-		err_exit("pipex: command not found: ");
+		err_exit("pipex: command not found: \n");
 	return ;
 }
 
@@ -58,7 +58,7 @@ static void	parent_p(char **argv, int *fd, char **envp)
 	if (res == -1)
 		err_exit(NULL);
 	else if (res == -2)
-		err_exit("pipex: command not found: ");
+		err_exit("pipex: command not found: \n");
 	return ;
 }
 

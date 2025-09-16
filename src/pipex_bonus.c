@@ -6,7 +6,7 @@
 /*   By: asando <asando@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 13:53:05 by asando            #+#    #+#             */
-/*   Updated: 2025/09/12 11:31:55 by asando           ###   ########.fr       */
+/*   Updated: 2025/09/16 13:57:27 by asando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	create_child_p(char **argv, int **fds, int n_pipes, char **envp)
 	{
 		child_p(argv, fds, n_pipes, i);
 		if (execute_program(argv[i + 2], envp) != 0)
-			err_exit("pipex: command not found: ");
+			err_exit("pipex: command not found: \n");
 	}
 	return ;
 }
@@ -90,7 +90,7 @@ static void	here_doc_exec(char **argv, int **fds, int n_pipes, char **envp)
 		else if (i == n_pipes - 1)
 			child_p(argv, fds, n_pipes - 1, i);
 		if (i != n_pipes && execute_program(argv[i + 3], envp) != 0)
-			err_exit("pipex: command not found: ");
+			err_exit("pipex: command not found: \n");
 	}
 	return ;
 }
